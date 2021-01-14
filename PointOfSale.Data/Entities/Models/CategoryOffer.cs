@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace PointOfSale.Data.Entities.Models
 {
-    public class OneOffBill
+    public class CategoryOffer
     {
         public int Id { get; set; }
-        public int Profit { get; set; }
-        public DateTime DateOfIssue { get; set; }
 
-        public Order Order { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+
+        public int OfferId { get; set; }
+        public Offer Offer { get; set; }
     }
 }

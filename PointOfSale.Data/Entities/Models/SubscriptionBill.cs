@@ -12,9 +12,8 @@ namespace PointOfSale.Data.Entities.Models
         public string BuyerFirstName { get; set; }
         public string BuyerLastName { get; set; }
         public string BuyerOib { get; set; }
-        public int Cost { get; set; }
+        public int Profit { get; set; }
 
-        public int BillId { get; set; }
-        public Bill Bill { get; set; }
+        public Order Order { get; set; }
     }
 }

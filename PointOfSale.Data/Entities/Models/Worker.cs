@@ -13,9 +13,9 @@ namespace PointOfSale.Data.Entities.Models
         public string LastName { get; set; }
         public string Oib { get; set; }
         public int DailyWorkHours { get; set; }
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } = true;
 
-        public int ServiceId { get; set; }
-        public Service Service { get; set; }
+        public int? ServiceId { get; set; }
+        public virtual Service Service { get; set; }
     }
 }

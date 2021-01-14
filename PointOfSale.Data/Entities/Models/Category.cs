@@ -11,6 +11,6 @@ namespace PointOfSale.Data.Entities.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<Offer> Offers { get; set; }
+        public ICollection<CategoryOffer> CategoryOffers { get; set; }
     }
 }

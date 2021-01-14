@@ -15,7 +15,7 @@ namespace PointOfSale.Data.Entities
         }
 
         public DbSet<Article> Articles { get; set; }
-        public DbSet<Bill> Bills { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Lease> Leases { get; set; }
         public DbSet<Offer> Offers { get; set; }
@@ -25,7 +25,7 @@ namespace PointOfSale.Data.Entities
         public DbSet<ServiceBill> ServiceBills { get; set; }
         public DbSet<SubscriptionBill> SubscriptionBills { get; set; }
         public DbSet<Worker> Workers { get; set; }
-
+        public DbSet<CategoryOffer> CategoryOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

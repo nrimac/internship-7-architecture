@@ -9,8 +9,8 @@ namespace PointOfSale.Data.Entities.Models
     public class Price
     {
         public int Id { get; set; }
-        public int PriceOfOffer { get; set; }
+        public int PriceOfArticle { get; set; }
 
-        public ICollection<Offer> Offers { get; set; }
+        public ICollection<Article> Articles { get; set; }
     }
 }
