@@ -20,7 +20,6 @@ namespace PointOfSale.Data.Entities
         public DbSet<Lease> Leases { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<OneOffBill> OneOffBills { get; set; }
-        public DbSet<Price> Prices { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<ServiceBill> ServiceBills { get; set; }
         public DbSet<SubscriptionBill> SubscriptionBills { get; set; }

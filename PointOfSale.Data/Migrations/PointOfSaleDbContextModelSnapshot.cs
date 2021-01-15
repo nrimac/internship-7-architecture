@@ -26,18 +26,16 @@ namespace PointOfSale.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int>("Cost")
+                        .HasColumnType("int");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PriceId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PriceId");
 
                     b.ToTable("Articles");
 
@@ -45,51 +43,51 @@ namespace PointOfSale.Data.Migrations
                         new
                         {
                             Id = 1,
+                            Cost = 4000,
                             Count = 2,
-                            Name = "Pila",
-                            PriceId = 1
+                            Name = "Pila"
                         },
                         new
                         {
                             Id = 2,
+                            Cost = 700,
                             Count = 5,
-                            Name = "Vrata",
-                            PriceId = 2
+                            Name = "Vrata"
                         },
                         new
                         {
                             Id = 3,
+                            Cost = 150,
                             Count = 12,
-                            Name = "Kutija",
-                            PriceId = 3
+                            Name = "Kutija"
                         },
                         new
                         {
                             Id = 4,
+                            Cost = 200,
                             Count = 43,
-                            Name = "Lampa",
-                            PriceId = 3
+                            Name = "Lampa"
                         },
                         new
                         {
                             Id = 5,
+                            Cost = 30,
                             Count = 54,
-                            Name = "Karte",
-                            PriceId = 4
+                            Name = "Karte"
                         },
                         new
                         {
                             Id = 6,
+                            Cost = 2000,
                             Count = 30,
-                            Name = "Kamera-Nikon D350 DSLR",
-                            PriceId = 5
+                            Name = "Kamera-Nikon D350 DSLR"
                         },
                         new
                         {
                             Id = 7,
+                            Cost = 1500,
                             Count = 7,
-                            Name = "Monitor-LG 27000",
-                            PriceId = 5
+                            Name = "Monitor-LG 27000"
                         });
                 });
 
@@ -436,48 +434,6 @@ namespace PointOfSale.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PointOfSale.Data.Entities.Models.Price", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("PriceOfArticle")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Prices");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PriceOfArticle = 400
-                        },
-                        new
-                        {
-                            Id = 2,
-                            PriceOfArticle = 700
-                        },
-                        new
-                        {
-                            Id = 3,
-                            PriceOfArticle = 200
-                        },
-                        new
-                        {
-                            Id = 4,
-                            PriceOfArticle = 30
-                        },
-                        new
-                        {
-                            Id = 5,
-                            PriceOfArticle = 1500
-                        });
-                });
-
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -667,17 +623,6 @@ namespace PointOfSale.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PointOfSale.Data.Entities.Models.Article", b =>
-                {
-                    b.HasOne("PointOfSale.Data.Entities.Models.Price", "Price")
-                        .WithMany("Articles")
-                        .HasForeignKey("PriceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Price");
-                });
-
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.CategoryOffer", b =>
                 {
                     b.HasOne("PointOfSale.Data.Entities.Models.Category", "Category")
@@ -782,11 +727,6 @@ namespace PointOfSale.Data.Migrations
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Order", b =>
                 {
                     b.Navigation("Offers");
-                });
-
-            modelBuilder.Entity("PointOfSale.Data.Entities.Models.Price", b =>
-                {
-                    b.Navigation("Articles");
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Service", b =>

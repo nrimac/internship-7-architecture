@@ -65,36 +65,6 @@ namespace PointOfSale.Data.Seeds
                     }
                 });
 
-            builder.Entity<Price>()
-                .HasData(new List<Price>
-                {
-                    new Price
-                    {
-                        Id = 1,
-                        PriceOfArticle = 400
-                    },
-                    new Price
-                    {
-                        Id = 2,
-                        PriceOfArticle = 700
-                    },
-                    new Price
-                    {
-                        Id = 3,
-                        PriceOfArticle = 200
-                    },
-                    new Price
-                    {
-                        Id = 4,
-                        PriceOfArticle = 30
-                    },
-                    new Price
-                    {
-                        Id = 5,
-                        PriceOfArticle = 1500
-                    }
-                });
-
             builder.Entity<Article>()
                 .HasData(new List<Article>
                 {
@@ -103,49 +73,49 @@ namespace PointOfSale.Data.Seeds
                         Id = 1,
                         Name = "Pila",
                         Count = 2,
-                        PriceId = 1
+                        Cost = 4000
                     },
                     new Article
                     {
                         Id = 2,
                         Name = "Vrata",
                         Count = 5,
-                        PriceId = 2
+                        Cost = 700
                     },
                     new Article
                     {
                         Id = 3,
                         Name = "Kutija",
                         Count = 12,
-                        PriceId = 3
+                        Cost = 150
                     },
                     new Article
                     {
                         Id = 4,
                         Name = "Lampa",
                         Count = 43,
-                        PriceId = 3
+                        Cost = 200
                     },
                     new Article
                     {
                         Id = 5,
                         Name = "Karte",
                         Count = 54,
-                        PriceId = 4
+                        Cost = 30
                     },
                     new Article
                     {
                         Id = 6,
                         Name = "Kamera-Nikon D350 DSLR",
                         Count = 30,
-                        PriceId = 5
+                        Cost = 2000
                     },
                     new Article
                     {
                         Id = 7,
                         Name = "Monitor-LG 27000",
                         Count = 7,
-                        PriceId = 5
+                        Cost = 1500
                     }
                 });
 

@@ -8,6 +8,21 @@ namespace PointOfSale.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Articles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    Cost = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Articles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -47,19 +62,6 @@ namespace PointOfSale.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OneOffBills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Prices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PriceOfArticle = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Prices", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,27 +106,6 @@ namespace PointOfSale.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SubscriptionBills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Articles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Count = table.Column<int>(type: "int", nullable: false),
-                    PriceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Articles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Articles_Prices_PriceId",
-                        column: x => x.PriceId,
-                        principalTable: "Prices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,6 +234,20 @@ namespace PointOfSale.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Articles",
+                columns: new[] { "Id", "Cost", "Count", "Name" },
+                values: new object[,]
+                {
+                    { 1, 4000, 2, "Pila" },
+                    { 2, 700, 5, "Vrata" },
+                    { 3, 150, 12, "Kutija" },
+                    { 4, 200, 43, "Lampa" },
+                    { 5, 30, 54, "Karte" },
+                    { 6, 2000, 30, "Kamera-Nikon D350 DSLR" },
+                    { 7, 1500, 7, "Monitor-LG 27000" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
                 values: new object[] { 1, "Elektrotehnika" });
@@ -262,28 +257,16 @@ namespace PointOfSale.Data.Migrations
                 columns: new[] { "Id", "DailyRates", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, 100, false, "Kombi-BMW" },
-                    { 2, 50, false, "PC" },
                     { 3, 30, false, "PlayStation 4" },
-                    { 4, 70, false, "Motor-Piaggio" }
+                    { 4, 70, false, "Motor-Piaggio" },
+                    { 1, 100, false, "Kombi-BMW" },
+                    { 2, 50, false, "PC" }
                 });
 
             migrationBuilder.InsertData(
                 table: "OneOffBills",
                 columns: new[] { "Id", "DateOfIssue", "Profit" },
                 values: new object[] { 1, new DateTime(2020, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 400 });
-
-            migrationBuilder.InsertData(
-                table: "Prices",
-                columns: new[] { "Id", "PriceOfArticle" },
-                values: new object[,]
-                {
-                    { 4, 30 },
-                    { 3, 200 },
-                    { 5, 1500 },
-                    { 1, 400 },
-                    { 2, 700 }
-                });
 
             migrationBuilder.InsertData(
                 table: "ServiceBills",
@@ -318,31 +301,24 @@ namespace PointOfSale.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Articles",
-                columns: new[] { "Id", "Count", "Name", "PriceId" },
-                values: new object[,]
-                {
-                    { 5, 54, "Karte", 4 },
-                    { 1, 2, "Pila", 1 },
-                    { 2, 5, "Vrata", 2 },
-                    { 3, 12, "Kutija", 3 },
-                    { 4, 43, "Lampa", 3 },
-                    { 7, 7, "Monitor-LG 27000", 5 },
-                    { 6, 30, "Kamera-Nikon D350 DSLR", 5 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Offers",
                 columns: new[] { "Id", "ArticleId", "CountSold", "LeaseId", "OrderId", "ServiceId" },
                 values: new object[,]
                 {
+                    { 1, 1, 1, null, null, null },
                     { 10, null, 0, null, null, 3 },
                     { 9, null, 0, null, null, 2 },
                     { 8, null, 1, null, null, 1 },
-                    { 11, null, 0, 1, null, null },
                     { 14, null, 0, 4, null, null },
                     { 13, null, 0, 3, null, null },
-                    { 12, null, 0, 2, null, null }
+                    { 11, null, 0, 1, null, null },
+                    { 12, null, 0, 2, null, null },
+                    { 6, 6, 0, null, null, null },
+                    { 5, 5, 0, null, null, null },
+                    { 4, 4, 0, null, null, null },
+                    { 3, 3, 0, null, null, null },
+                    { 2, 2, 0, null, null, null },
+                    { 7, 7, 0, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -364,45 +340,14 @@ namespace PointOfSale.Data.Migrations
                 columns: new[] { "Id", "CategoryId", "OfferId" },
                 values: new object[,]
                 {
+                    { 1, 1, 4 },
+                    { 2, 1, 6 },
+                    { 3, 1, 7 },
                     { 6, 1, 12 },
                     { 7, 1, 13 },
                     { 4, 1, 8 },
                     { 5, 1, 9 }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Offers",
-                columns: new[] { "Id", "ArticleId", "CountSold", "LeaseId", "OrderId", "ServiceId" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, null, null, null },
-                    { 2, 2, 0, null, null, null },
-                    { 3, 3, 0, null, null, null },
-                    { 4, 4, 0, null, null, null },
-                    { 5, 5, 0, null, null, null },
-                    { 6, 6, 0, null, null, null },
-                    { 7, 7, 0, null, null, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "CategoryOffers",
-                columns: new[] { "Id", "CategoryId", "OfferId" },
-                values: new object[] { 1, 1, 4 });
-
-            migrationBuilder.InsertData(
-                table: "CategoryOffers",
-                columns: new[] { "Id", "CategoryId", "OfferId" },
-                values: new object[] { 2, 1, 6 });
-
-            migrationBuilder.InsertData(
-                table: "CategoryOffers",
-                columns: new[] { "Id", "CategoryId", "OfferId" },
-                values: new object[] { 3, 1, 7 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Articles_PriceId",
-                table: "Articles",
-                column: "PriceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryOffers_CategoryId",
@@ -492,9 +437,6 @@ namespace PointOfSale.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Services");
-
-            migrationBuilder.DropTable(
-                name: "Prices");
 
             migrationBuilder.DropTable(
                 name: "OneOffBills");
