@@ -109,30 +109,6 @@ namespace PointOfSale.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Workers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Oib = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DailyWorkHours = table.Column<int>(type: "int", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Workers_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -203,6 +179,30 @@ namespace PointOfSale.Data.Migrations
                         name: "FK_Offers_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Oib = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DailyWorkHours = table.Column<int>(type: "int", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workers_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -290,14 +290,15 @@ namespace PointOfSale.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Workers",
-                columns: new[] { "Id", "DailyWorkHours", "FirstName", "IsAvailable", "LastName", "Oib", "ServiceId" },
+                columns: new[] { "Id", "DailyWorkHours", "FirstName", "IsAvailable", "LastName", "Oib", "OrderId" },
                 values: new object[,]
                 {
-                    { 4, 8, "Toni", true, "Toničević", "65436345", null },
+                    { 5, 8, "Mate", true, "Matić", "3123131231", null },
                     { 1, 8, "Mate", true, "Matić", "3123131231", null },
                     { 2, 8, "Šime", true, "Šimić", "4324232", null },
                     { 3, 8, "Ivan", true, "Ivanović", "543645454", null },
-                    { 5, 8, "Mate", true, "Matić", "3123131231", null }
+                    { 4, 8, "Toni", true, "Toničević", "65436345", null },
+                    { 6, 8, "Ana", true, "Anić", "4564635465", null }
                 });
 
             migrationBuilder.InsertData(
@@ -306,19 +307,19 @@ namespace PointOfSale.Data.Migrations
                 values: new object[,]
                 {
                     { 1, 1, 1, null, null, null },
-                    { 10, null, 0, null, null, 3 },
-                    { 9, null, 0, null, null, 2 },
-                    { 8, null, 1, null, null, 1 },
-                    { 14, null, 0, 4, null, null },
-                    { 13, null, 0, 3, null, null },
+                    { 2, 2, 0, null, null, null },
+                    { 3, 3, 0, null, null, null },
+                    { 4, 4, 0, null, null, null },
+                    { 5, 5, 0, null, null, null },
+                    { 6, 6, 0, null, null, null },
+                    { 7, 7, 0, null, null, null },
                     { 11, null, 0, 1, null, null },
                     { 12, null, 0, 2, null, null },
-                    { 6, 6, 0, null, null, null },
-                    { 5, 5, 0, null, null, null },
-                    { 4, 4, 0, null, null, null },
-                    { 3, 3, 0, null, null, null },
-                    { 2, 2, 0, null, null, null },
-                    { 7, 7, 0, null, null, null }
+                    { 13, null, 0, 3, null, null },
+                    { 14, null, 0, 4, null, null },
+                    { 8, null, 1, null, null, 1 },
+                    { 9, null, 0, null, null, 2 },
+                    { 10, null, 0, null, null, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -329,11 +330,6 @@ namespace PointOfSale.Data.Migrations
                     { 1, 440, 1, 1, null },
                     { 2, 200, null, null, 1 }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Workers",
-                columns: new[] { "Id", "DailyWorkHours", "FirstName", "IsAvailable", "LastName", "Oib", "ServiceId" },
-                values: new object[] { 6, 8, "Ana", false, "Anić", "4564635465", 1 });
 
             migrationBuilder.InsertData(
                 table: "CategoryOffers",
@@ -407,9 +403,9 @@ namespace PointOfSale.Data.Migrations
                 filter: "[SubscriptionBillId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Workers_ServiceId",
+                name: "IX_Workers_OrderId",
                 table: "Workers",
-                column: "ServiceId");
+                column: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

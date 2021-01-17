@@ -5,13 +5,13 @@ using PointOfSale.Data.Entities.Models;
 using PointOfSale.Domain.Enums;
 using PointOfSale.Presentation.Helpers;
 using System.Threading;
+using PointOfSale.Data.Enums;
 
 namespace PointOfSale.Presentation.Actions.OfferActions
 {
     public class OfferAddAction : IAction
     {
         private readonly OfferRepository _offerRepository;
-        private int OfferChoice { get; set; }
 
         public int MenuIndex { get; set; }
         public string Label { get; set; } = "Add Offer";
@@ -22,36 +22,37 @@ namespace PointOfSale.Presentation.Actions.OfferActions
 
         public void Call()
         {
-            do
+            
+            Console.Clear();
+
+            Console.WriteLine("Choose type of offer to add:");
+
+            var offerChoice = ReadHelper.ChooseTypeOfOffer();
+
+            switch (offerChoice)
             {
-                Console.Clear();
+                case OfferType.Article:
+                    var article = CreateArticle();
 
-                Console.WriteLine("1. Add article\n" +
-                    "2. Add service\n" +
-                    "3. Add lease");
+                    Console.WriteLine(_offerRepository.AddArticle(article));
+                    return;
+                case OfferType.Service:
+                    var service = CreateService();
 
-                OfferChoice = ReadHelper.IntegerInput();
+                    Console.WriteLine(_offerRepository.AddService(service));
+                    return;
+                case OfferType.Lease:
+                    var lease = CreateLease();
 
-                switch (OfferChoice)
-                {
-                    case 1:
-                        var article = CreateArticle();
-
-                        Console.WriteLine(_offerRepository.AddArticle(article));
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    default:
-                        Console.WriteLine("Not an available option!");
-                        Thread.Sleep(1000);
-                        break;
-                }
-            } while (OfferChoice is not 1 and not 2 and not 3);
+                    Console.WriteLine(_offerRepository.AddLease(lease));
+                    return;
+                default:
+                    return;
+            }
+            
         }
 
-        private Article CreateArticle()
+        private static Article CreateArticle()
         {
             var newArticle = new Article();
 
@@ -67,16 +68,33 @@ namespace PointOfSale.Presentation.Actions.OfferActions
             return newArticle;
         }
 
-        private Service CreateService()
+        private static Service CreateService()
         {
             var newService = new Service();
+
+            Console.WriteLine("Name of new service:");
+            newService.Name = Console.ReadLine();
+
+            Console.WriteLine("Hourly rate for the service:");
+            newService.HourlyRates = ReadHelper.IntegerInput();
+
+            Console.WriteLine("Number of workers needed for the service:");
+            newService.NumberOfWorkersNeeded = ReadHelper.IntegerInput();
 
             return newService;
         }
 
-        private Lease CreateLease()
+        private static Lease CreateLease()
         {
             var newLease = new Lease();
+
+            Console.WriteLine("Name of lease:");
+            newLease.Name = Console.ReadLine();
+
+            Console.WriteLine("Daily rates of lease:");
+            newLease.DailyRates = ReadHelper.IntegerInput();
+
+            newLease.IsActive = false;
 
             return newLease;
         }

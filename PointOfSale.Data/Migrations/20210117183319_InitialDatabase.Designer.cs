@@ -10,7 +10,7 @@ using PointOfSale.Data.Entities;
 namespace PointOfSale.Data.Migrations
 {
     [DbContext(typeof(PointOfSaleDbContext))]
-    [Migration("20210115184357_InitialDatabase")]
+    [Migration("20210117183319_InitialDatabase")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -558,12 +558,12 @@ namespace PointOfSale.Data.Migrations
                     b.Property<string>("Oib")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ServiceId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Workers");
 
@@ -618,10 +618,9 @@ namespace PointOfSale.Data.Migrations
                             Id = 6,
                             DailyWorkHours = 8,
                             FirstName = "Ana",
-                            IsAvailable = false,
+                            IsAvailable = true,
                             LastName = "Anić",
-                            Oib = "4564635465",
-                            ServiceId = 1
+                            Oib = "4564635465"
                         });
                 });
 
@@ -694,11 +693,11 @@ namespace PointOfSale.Data.Migrations
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Worker", b =>
                 {
-                    b.HasOne("PointOfSale.Data.Entities.Models.Service", "Service")
+                    b.HasOne("PointOfSale.Data.Entities.Models.Order", "Order")
                         .WithMany("Workers")
-                        .HasForeignKey("ServiceId");
+                        .HasForeignKey("OrderId");
 
-                    b.Navigation("Service");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Article", b =>
@@ -729,13 +728,13 @@ namespace PointOfSale.Data.Migrations
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Order", b =>
                 {
                     b.Navigation("Offers");
+
+                    b.Navigation("Workers");
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Service", b =>
                 {
                     b.Navigation("Offer");
-
-                    b.Navigation("Workers");
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.ServiceBill", b =>

@@ -5,6 +5,7 @@
         Success,
         AlreadyExists,
         NoChanges,
-        ValidationError
+        ValidationError,
+        NotFound
     }
 }

@@ -320,7 +320,7 @@ namespace PointOfSale.Data.Seeds
                         Oib = "3123131231",
                         DailyWorkHours = 8,
                         IsAvailable = true,
-                        ServiceId = null
+                        OrderId = null
                     },
                     new Worker
                     {
@@ -330,7 +330,7 @@ namespace PointOfSale.Data.Seeds
                         Oib = "4324232",
                         DailyWorkHours = 8,
                         IsAvailable = true,
-                        ServiceId = null
+                        OrderId = null
                     },
                     new Worker
                     {
@@ -340,7 +340,7 @@ namespace PointOfSale.Data.Seeds
                         Oib = "543645454",
                         DailyWorkHours = 8,
                         IsAvailable = true,
-                        ServiceId = null
+                        OrderId = null
                     },
                     new Worker
                     {
@@ -350,7 +350,7 @@ namespace PointOfSale.Data.Seeds
                         Oib = "65436345",
                         DailyWorkHours = 8,
                         IsAvailable = true,
-                        ServiceId = null
+                        OrderId = null
                     },
                     new Worker
                     {
@@ -360,7 +360,7 @@ namespace PointOfSale.Data.Seeds
                         Oib = "3123131231",
                         DailyWorkHours = 8,
                         IsAvailable = true,
-                        ServiceId = null
+                        OrderId = null
                     },
                     new Worker
                     {
@@ -369,8 +369,8 @@ namespace PointOfSale.Data.Seeds
                         LastName = "Anić",
                         Oib = "4564635465",
                         DailyWorkHours = 8,
-                        IsAvailable = false,
-                        ServiceId = 1
+                        IsAvailable = true,
+                        OrderId = null
                     }
                 });
 

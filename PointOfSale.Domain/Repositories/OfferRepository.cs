@@ -13,11 +13,62 @@ namespace PointOfSale.Domain.Repositories
         {
         }
 
+        public ResponseResultType DeleteArticle(int articleId)
+        {
+            var article = DbContext.Articles.Find(articleId);
+
+            if (article == null)
+            {
+                return ResponseResultType.NotFound;
+            }
+
+            DbContext.Offers.Remove(DbContext.Offers.Find(DbContext.Offers
+                .Where(o => o.ArticleId == article.Id)
+                .ToList()[0].Id));
+
+            DbContext.Articles.Remove(article);
+            return SaveChanges();
+        }
+
+        public ResponseResultType DeleteService(int serviceId)
+        {
+            var service = DbContext.Services.Find(serviceId);
+
+            if (service == null)
+            {
+                return ResponseResultType.NotFound;
+            }
+
+            DbContext.Offers.Remove(DbContext.Offers.Find(DbContext.Offers
+                .Where(o => o.ServiceId == service.Id)
+                .ToList()[0].Id));
+
+            DbContext.Services.Remove(service);
+            return SaveChanges();
+        }
+
+        public ResponseResultType DeleteLease(int leaseId)
+        {
+            var lease = DbContext.Leases.Find(leaseId);
+
+            if (lease == null)
+            {
+                return ResponseResultType.NotFound;
+            }
+
+            DbContext.Offers.Remove(DbContext.Offers.Find(DbContext.Offers
+                .Where(o => o.LeaseId == lease.Id)
+                .ToList()[0].Id));
+
+            DbContext.Leases.Remove(lease);
+            return SaveChanges();
+        }
+
         public ResponseResultType AddArticle(Article article)
         {
             var articleExists = DbContext.Articles.Any(a => a.Name == article.Name);
 
-            if (articleExists) 
+            if (articleExists)
             {
                 return ResponseResultType.AlreadyExists;
             }
@@ -53,7 +104,7 @@ namespace PointOfSale.Domain.Repositories
             var offer = new Offer
             {
                 CountSold = 0,
-                ArticleId = service.Id
+                ServiceId = service.Id
             };
 
             DbContext.Offers.Add(offer);
@@ -70,7 +121,7 @@ namespace PointOfSale.Domain.Repositories
             var offer = new Offer
             {
                 CountSold = 0,
-                ArticleId = lease.Id
+                LeaseId = lease.Id
             };
 
             DbContext.Offers.Add(offer);
@@ -78,9 +129,53 @@ namespace PointOfSale.Domain.Repositories
             return SaveChanges();
         }
 
-        public ICollection<Offer> GettAll()
+        public ResponseResultType EditArticle(int articleId, Article editedArticle)
+        {
+            var article = DbContext.Articles.Find(articleId);
+
+            article.Name = editedArticle.Name;
+            article.Cost = editedArticle.Cost;
+            article.Count = editedArticle.Count;
+            return SaveChanges();
+        }
+
+        public ResponseResultType EditService(int serviceId, Service editedService)
+        {
+            var service = DbContext.Services.Find(serviceId);
+
+            service.Name = editedService.Name;
+            service.HourlyRates = editedService.HourlyRates;
+            service.NumberOfWorkersNeeded = editedService.NumberOfWorkersNeeded;
+            return SaveChanges();
+        }
+
+        public ResponseResultType EditLease(int leaseId, Lease editedLease)
+        {
+            var lease = DbContext.Leases.Find(leaseId);
+
+            lease.Name = editedLease.Name;
+            lease.DailyRates = editedLease.DailyRates;
+            return SaveChanges();
+        }
+
+        public ICollection<Offer> GettAllOffers()
         {
             return DbContext.Offers.ToList();
+        }
+
+        public ICollection<Article> GettAllArticles()
+        {
+            return DbContext.Articles.ToList();
+        }
+
+        public ICollection<Service> GettAllServices()
+        {
+            return DbContext.Services.ToList();
+        }
+
+        public ICollection<Lease> GettAllLeases()
+        {
+            return DbContext.Leases.ToList();
         }
     }
 }

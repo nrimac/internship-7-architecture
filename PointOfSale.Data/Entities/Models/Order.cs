@@ -13,6 +13,8 @@ namespace PointOfSale.Data.Entities.Models
 
         public ICollection<Offer> Offers { get; set; }
 
+        public ICollection<Worker> Workers { get; set; }
+
         public int? OneOffBillId { get; set; }
         public virtual OneOffBill OneOffBill { get; set; }
 

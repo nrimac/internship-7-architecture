@@ -14,7 +14,5 @@ namespace PointOfSale.Data.Entities.Models
         public int NumberOfWorkersNeeded { get; set; }
 
         public Offer Offer { get; set; }
-
-        public ICollection<Worker> Workers { get; set; }
     }
 }
