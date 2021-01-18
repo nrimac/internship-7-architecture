@@ -46,5 +46,41 @@ namespace PointOfSale.Presentation.Helpers
                 PrintLease(lease);
             }
         }
+
+        public static void PrintCategory(Category category)
+        {
+            Console.WriteLine($"Id:{category.Id} Name:{category.Name}");
+        }
+
+        public static void PrintCategories(ICollection<Category> categories)
+        {
+            foreach (var category in categories)
+            {
+                PrintCategory(category);
+            }
+        }
+
+        public static void PrintOffers(ICollection<Offer> offers)
+        {
+            foreach (var offer in offers)
+            {
+                Console.Write($"Offer Id:{offer.Id} ");
+
+                if (offer.ArticleId is not null)
+                {
+                    PrintArticle(offer.Article);
+                }
+
+                if (offer.ServiceId is not null)
+                {
+                    PrintService(offer.Service);
+                }
+
+                if (offer.LeaseId is not null)
+                {
+                    PrintLease(offer.Lease);
+                }
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace PointOfSale.Presentation.Factories
     {
         public static OfferParentAction GetOfferParentAction()
         {
-            var customerActions = new List<IAction>
+            var offerActions = new List<IAction>
             {
                 new OfferAddAction(RepositoryFactory.GetRepository<OfferRepository>()),
                 new OfferEditAction(RepositoryFactory.GetRepository<OfferRepository>()),
@@ -19,8 +19,8 @@ namespace PointOfSale.Presentation.Factories
                 new ExitMenuAction()
             };
 
-            var customerParentAction = new OfferParentAction(customerActions);
-            return customerParentAction;
+            var offerParentAction = new OfferParentAction(offerActions);
+            return offerParentAction;
         }
     }
 }

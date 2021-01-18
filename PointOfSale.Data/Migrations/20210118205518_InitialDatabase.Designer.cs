@@ -10,7 +10,7 @@ using PointOfSale.Data.Entities;
 namespace PointOfSale.Data.Migrations
 {
     [DbContext(typeof(PointOfSaleDbContext))]
-    [Migration("20210117183319_InitialDatabase")]
+    [Migration("20210118205518_InitialDatabase")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
