@@ -10,8 +10,8 @@ using PointOfSale.Data.Entities;
 namespace PointOfSale.Data.Migrations
 {
     [DbContext(typeof(PointOfSaleDbContext))]
-    [Migration("20210118205518_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20210120104023_initialDatabase")]
+    partial class initialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -248,9 +248,6 @@ namespace PointOfSale.Data.Migrations
                     b.Property<int?>("LeaseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ServiceId")
                         .HasColumnType("int");
 
@@ -264,8 +261,6 @@ namespace PointOfSale.Data.Migrations
                         .IsUnique()
                         .HasFilter("[LeaseId] IS NOT NULL");
 
-                    b.HasIndex("OrderId");
-
                     b.HasIndex("ServiceId")
                         .IsUnique()
                         .HasFilter("[ServiceId] IS NOT NULL");
@@ -277,7 +272,7 @@ namespace PointOfSale.Data.Migrations
                         {
                             Id = 1,
                             ArticleId = 1,
-                            CountSold = 1
+                            CountSold = 2
                         },
                         new
                         {
@@ -359,6 +354,46 @@ namespace PointOfSale.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("PointOfSale.Data.Entities.Models.OfferOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("LeaseDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfSameArticle")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OfferOrders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NumberOfSameArticle = 2,
+                            OfferId = 1,
+                            OrderId = 1
+                        });
+                });
+
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.OneOffBill", b =>
                 {
                     b.Property<int>("Id")
@@ -380,8 +415,8 @@ namespace PointOfSale.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfIssue = new DateTime(2020, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Profit = 400
+                            DateOfIssue = new DateTime(2021, 1, 20, 11, 40, 23, 71, DateTimeKind.Local).AddTicks(4156),
+                            Profit = 8000
                         });
                 });
 
@@ -391,9 +426,6 @@ namespace PointOfSale.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<int>("FullProfit")
-                        .HasColumnType("int");
 
                     b.Property<int?>("OneOffBillId")
                         .HasColumnType("int");
@@ -424,15 +456,7 @@ namespace PointOfSale.Data.Migrations
                         new
                         {
                             Id = 1,
-                            FullProfit = 440,
-                            OneOffBillId = 1,
-                            ServiceBillId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            FullProfit = 200,
-                            SubscriptionBillId = 1
+                            OneOffBillId = 1
                         });
                 });
 
@@ -493,13 +517,6 @@ namespace PointOfSale.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceBills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Profit = 40
-                        });
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.SubscriptionBill", b =>
@@ -524,16 +541,6 @@ namespace PointOfSale.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SubscriptionBills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BuyerFirstName = "Niko",
-                            BuyerLastName = "Nikić",
-                            BuyerOib = "31232543",
-                            Profit = 200
-                        });
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Worker", b =>
@@ -653,10 +660,6 @@ namespace PointOfSale.Data.Migrations
                         .WithOne("Offer")
                         .HasForeignKey("PointOfSale.Data.Entities.Models.Offer", "LeaseId");
 
-                    b.HasOne("PointOfSale.Data.Entities.Models.Order", "Order")
-                        .WithMany("Offers")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("PointOfSale.Data.Entities.Models.Service", "Service")
                         .WithOne("Offer")
                         .HasForeignKey("PointOfSale.Data.Entities.Models.Offer", "ServiceId");
@@ -665,9 +668,26 @@ namespace PointOfSale.Data.Migrations
 
                     b.Navigation("Lease");
 
-                    b.Navigation("Order");
-
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("PointOfSale.Data.Entities.Models.OfferOrder", b =>
+                {
+                    b.HasOne("PointOfSale.Data.Entities.Models.Offer", "Offer")
+                        .WithMany("OfferOrders")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PointOfSale.Data.Entities.Models.Order", "Order")
+                        .WithMany("OfferOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Order", b =>
@@ -718,6 +738,8 @@ namespace PointOfSale.Data.Migrations
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Offer", b =>
                 {
                     b.Navigation("CategoryOffers");
+
+                    b.Navigation("OfferOrders");
                 });
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.OneOffBill", b =>
@@ -727,7 +749,7 @@ namespace PointOfSale.Data.Migrations
 
             modelBuilder.Entity("PointOfSale.Data.Entities.Models.Order", b =>
                 {
-                    b.Navigation("Offers");
+                    b.Navigation("OfferOrders");
 
                     b.Navigation("Workers");
                 });

@@ -20,9 +20,7 @@ namespace PointOfSale.Data.Entities.Models
         public int? LeaseId { get; set; }
         public virtual Lease Lease { get; set; }
 
-        public int? OrderId { get; set; }
-        public virtual Order Order { get; set; }
-
+        public ICollection<OfferOrder> OfferOrders { get; set; }
         public ICollection<CategoryOffer> CategoryOffers { get; set; }
     }
 }

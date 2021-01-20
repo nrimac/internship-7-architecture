@@ -24,7 +24,7 @@ namespace PointOfSale.Presentation.Helpers
 
         public static void PrintService(Service service)
         {
-            Console.WriteLine($"Id:{service.Id} Name:{service.Name} Hourly rate:{service.HourlyRates}");
+            Console.WriteLine($"Id:{service.Id} Name:{service.Name} Hourly rate:{service.HourlyRates} Number of required workers:{service.NumberOfWorkersNeeded}");
         }
 
         public static void PrintServices(ICollection<Service> services)
@@ -70,17 +70,49 @@ namespace PointOfSale.Presentation.Helpers
                 {
                     PrintArticle(offer.Article);
                 }
-
-                if (offer.ServiceId is not null)
+                else
                 {
-                    PrintService(offer.Service);
-                }
+                    if (offer.ServiceId is not null)
+                    {
+                        PrintService(offer.Service);
+                    }
+                    else
+                    {
+                        if (offer.LeaseId is not null)
+                        {
+                            PrintLease(offer.Lease);
+                        }
+                    }
+                } 
+            }
+        }
 
-                if (offer.LeaseId is not null)
+        public static void PrintArticlesAndServices(ICollection<Offer> offers)
+        {
+            foreach (var offer in offers)
+            {
+                if (offer.LeaseId == null)
                 {
-                    PrintLease(offer.Lease);
+                    Console.Write($"Offer Id:{offer.Id} ");
+
+                    if (offer.ArticleId is not null)
+                    {
+                        PrintArticle(offer.Article);
+                    }
+                    else
+                    {
+                        if (offer.ServiceId is not null)
+                        {
+                            PrintService(offer.Service);
+                        }
+                    }
                 }
             }
+        }
+
+        public static void PrintOneOffBill(ICollection<OfferOrder> offerOrders, int orderId)
+        {
+            
         }
     }
 }

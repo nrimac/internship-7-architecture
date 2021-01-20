@@ -6,6 +6,8 @@
         AlreadyExists,
         NoChanges,
         ValidationError,
-        NotFound
+        NotFound,
+        NotEnoughInInventory,
+        NotEnoughWorkers
     }
 }

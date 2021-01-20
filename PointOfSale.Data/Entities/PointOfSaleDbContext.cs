@@ -25,6 +25,7 @@ namespace PointOfSale.Data.Entities
         public DbSet<SubscriptionBill> SubscriptionBills { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<CategoryOffer> CategoryOffers { get; set; }
+        public DbSet<OfferOrder> OfferOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

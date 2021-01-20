@@ -16,32 +16,21 @@ namespace PointOfSale.Data.Seeds
                     new OneOffBill
                     {
                         Id = 1,
-                        Profit = 400,
-                        DateOfIssue = new DateTime(2020,12,5)
+                        Profit = 8000,
+                        DateOfIssue = DateTime.Now
                     }
                 });
 
             builder.Entity<ServiceBill>()
                 .HasData(new List<ServiceBill>
                 {
-                    new ServiceBill
-                    {
-                        Id = 1,
-                        Profit = 40
-                    }
+
                 });
 
             builder.Entity<SubscriptionBill>()
                 .HasData(new List<SubscriptionBill>
                 {
-                    new SubscriptionBill
-                    {
-                        Id = 1,
-                        BuyerFirstName = "Niko",
-                        BuyerLastName = "Nikić",
-                        BuyerOib = "31232543",
-                        Profit = 200
-                    }
+
                 });
 
             builder.Entity<Order>()
@@ -50,18 +39,21 @@ namespace PointOfSale.Data.Seeds
                     new Order
                     {
                         Id = 1,
-                        FullProfit = 440,
                         OneOffBillId = 1,
-                        ServiceBillId = 1,
-                        SubscriptionBillId = null
-                    },
-                    new Order
-                    {
-                        Id = 2,
-                        FullProfit = 200,
-                        OneOffBillId = null,
                         ServiceBillId = null,
-                        SubscriptionBillId = 1
+                        SubscriptionBillId = null
+                    }
+                });
+
+            builder.Entity<OfferOrder>()
+                .HasData(new List<OfferOrder>
+                {
+                    new OfferOrder
+                    {
+                        Id = 1,
+                        OfferId = 1,
+                        OrderId = 1,
+                        NumberOfSameArticle = 2
                     }
                 });
 
@@ -187,8 +179,7 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 1,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
-                        CountSold = 1
+                        CountSold = 2
                     },
                     new Offer
                     {
@@ -196,7 +187,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 2,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -205,7 +195,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 3,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -214,7 +203,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 4,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -223,7 +211,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 5,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -232,7 +219,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 6,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -241,7 +227,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = 7,
                         ServiceId = null,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -250,7 +235,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = 1,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 1
                     },
                     new Offer
@@ -259,7 +243,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = 2,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -268,7 +251,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = 3,
                         LeaseId = null,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -277,7 +259,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = null,
                         LeaseId = 1,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -286,7 +267,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = null,
                         LeaseId = 2,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -295,7 +275,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = null,
                         LeaseId = 3,
-                        OrderId = null,
                         CountSold = 0
                     },
                     new Offer
@@ -304,7 +283,6 @@ namespace PointOfSale.Data.Seeds
                         ArticleId = null,
                         ServiceId = null,
                         LeaseId = 4,
-                        OrderId = null,
                         CountSold = 0
                     },
                 });

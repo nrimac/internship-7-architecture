@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PointOfSale.Data.Migrations
 {
-    public partial class InitialDatabase : Migration
+    public partial class initialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -109,12 +109,45 @@ namespace PointOfSale.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Offers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CountSold = table.Column<int>(type: "int", nullable: false),
+                    ArticleId = table.Column<int>(type: "int", nullable: true),
+                    ServiceId = table.Column<int>(type: "int", nullable: true),
+                    LeaseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Offers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Offers_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Offers_Leases_LeaseId",
+                        column: x => x.LeaseId,
+                        principalTable: "Leases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Offers_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullProfit = table.Column<int>(type: "int", nullable: false),
                     OneOffBillId = table.Column<int>(type: "int", nullable: true),
                     SubscriptionBillId = table.Column<int>(type: "int", nullable: true),
                     ServiceBillId = table.Column<int>(type: "int", nullable: true)
@@ -138,71 +171,6 @@ namespace PointOfSale.Data.Migrations
                         name: "FK_Orders_SubscriptionBills_SubscriptionBillId",
                         column: x => x.SubscriptionBillId,
                         principalTable: "SubscriptionBills",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Offers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CountSold = table.Column<int>(type: "int", nullable: false),
-                    ArticleId = table.Column<int>(type: "int", nullable: true),
-                    ServiceId = table.Column<int>(type: "int", nullable: true),
-                    LeaseId = table.Column<int>(type: "int", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Offers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Offers_Articles_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Articles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Offers_Leases_LeaseId",
-                        column: x => x.LeaseId,
-                        principalTable: "Leases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Offers_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Offers_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Workers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Oib = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DailyWorkHours = table.Column<int>(type: "int", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Workers_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -233,6 +201,59 @@ namespace PointOfSale.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OfferOrders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumberOfSameArticle = table.Column<int>(type: "int", nullable: false),
+                    ServiceHours = table.Column<int>(type: "int", nullable: true),
+                    LeaseDays = table.Column<int>(type: "int", nullable: true),
+                    OfferId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfferOrders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfferOrders_Offers_OfferId",
+                        column: x => x.OfferId,
+                        principalTable: "Offers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfferOrders_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Oib = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DailyWorkHours = table.Column<int>(type: "int", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workers_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "Articles",
                 columns: new[] { "Id", "Cost", "Count", "Name" },
@@ -257,8 +278,8 @@ namespace PointOfSale.Data.Migrations
                 columns: new[] { "Id", "DailyRates", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 3, 30, false, "PlayStation 4" },
                     { 4, 70, false, "Motor-Piaggio" },
+                    { 3, 30, false, "PlayStation 4" },
                     { 1, 100, false, "Kombi-BMW" },
                     { 2, 50, false, "PC" }
                 });
@@ -266,12 +287,7 @@ namespace PointOfSale.Data.Migrations
             migrationBuilder.InsertData(
                 table: "OneOffBills",
                 columns: new[] { "Id", "DateOfIssue", "Profit" },
-                values: new object[] { 1, new DateTime(2020, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 400 });
-
-            migrationBuilder.InsertData(
-                table: "ServiceBills",
-                columns: new[] { "Id", "Profit" },
-                values: new object[] { 1, 40 });
+                values: new object[] { 1, new DateTime(2021, 1, 20, 11, 40, 23, 71, DateTimeKind.Local).AddTicks(4156), 8000 });
 
             migrationBuilder.InsertData(
                 table: "Services",
@@ -282,11 +298,6 @@ namespace PointOfSale.Data.Migrations
                     { 2, 30, "Instalacija klime", 2 },
                     { 3, 40, "Bojanje zida", 1 }
                 });
-
-            migrationBuilder.InsertData(
-                table: "SubscriptionBills",
-                columns: new[] { "Id", "BuyerFirstName", "BuyerLastName", "BuyerOib", "Profit" },
-                values: new object[] { 1, "Niko", "Nikić", "31232543", 200 });
 
             migrationBuilder.InsertData(
                 table: "Workers",
@@ -303,33 +314,29 @@ namespace PointOfSale.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Offers",
-                columns: new[] { "Id", "ArticleId", "CountSold", "LeaseId", "OrderId", "ServiceId" },
+                columns: new[] { "Id", "ArticleId", "CountSold", "LeaseId", "ServiceId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, null, null, null },
-                    { 2, 2, 0, null, null, null },
-                    { 3, 3, 0, null, null, null },
-                    { 4, 4, 0, null, null, null },
-                    { 5, 5, 0, null, null, null },
-                    { 6, 6, 0, null, null, null },
-                    { 7, 7, 0, null, null, null },
-                    { 11, null, 0, 1, null, null },
-                    { 12, null, 0, 2, null, null },
-                    { 13, null, 0, 3, null, null },
-                    { 14, null, 0, 4, null, null },
-                    { 8, null, 1, null, null, 1 },
-                    { 9, null, 0, null, null, 2 },
-                    { 10, null, 0, null, null, 3 }
+                    { 1, 1, 2, null, null },
+                    { 2, 2, 0, null, null },
+                    { 3, 3, 0, null, null },
+                    { 4, 4, 0, null, null },
+                    { 5, 5, 0, null, null },
+                    { 6, 6, 0, null, null },
+                    { 7, 7, 0, null, null },
+                    { 11, null, 0, 1, null },
+                    { 12, null, 0, 2, null },
+                    { 13, null, 0, 3, null },
+                    { 14, null, 0, 4, null },
+                    { 8, null, 1, null, 1 },
+                    { 9, null, 0, null, 2 },
+                    { 10, null, 0, null, 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Orders",
-                columns: new[] { "Id", "FullProfit", "OneOffBillId", "ServiceBillId", "SubscriptionBillId" },
-                values: new object[,]
-                {
-                    { 1, 440, 1, 1, null },
-                    { 2, 200, null, null, 1 }
-                });
+                columns: new[] { "Id", "OneOffBillId", "ServiceBillId", "SubscriptionBillId" },
+                values: new object[] { 1, 1, null, null });
 
             migrationBuilder.InsertData(
                 table: "CategoryOffers",
@@ -345,6 +352,11 @@ namespace PointOfSale.Data.Migrations
                     { 5, 1, 9 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "OfferOrders",
+                columns: new[] { "Id", "LeaseDays", "NumberOfSameArticle", "OfferId", "OrderId", "ServiceHours" },
+                values: new object[] { 1, null, 2, 1, 1, null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryOffers_CategoryId",
                 table: "CategoryOffers",
@@ -354,6 +366,16 @@ namespace PointOfSale.Data.Migrations
                 name: "IX_CategoryOffers_OfferId",
                 table: "CategoryOffers",
                 column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfferOrders_OfferId",
+                table: "OfferOrders",
+                column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfferOrders_OrderId",
+                table: "OfferOrders",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Offers_ArticleId",
@@ -368,11 +390,6 @@ namespace PointOfSale.Data.Migrations
                 column: "LeaseId",
                 unique: true,
                 filter: "[LeaseId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Offers_OrderId",
-                table: "Offers",
-                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Offers_ServiceId",
@@ -414,6 +431,9 @@ namespace PointOfSale.Data.Migrations
                 name: "CategoryOffers");
 
             migrationBuilder.DropTable(
+                name: "OfferOrders");
+
+            migrationBuilder.DropTable(
                 name: "Workers");
 
             migrationBuilder.DropTable(
@@ -423,13 +443,13 @@ namespace PointOfSale.Data.Migrations
                 name: "Offers");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "Articles");
 
             migrationBuilder.DropTable(
                 name: "Leases");
-
-            migrationBuilder.DropTable(
-                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Services");
